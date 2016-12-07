@@ -107,6 +107,33 @@ var SYNC_KEY = "__local-storage__shared-shared-session-sync-key__";
 
 var global$1 = window;
 
+// Ref: https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent#Polyfill
+function CustomEvent(event, params) {
+    params = params || {
+        bubbles: false,
+        cancelable: false,
+        detail: undefined
+    };
+    var evt = document.createEvent("CustomEvent");
+    evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+    return evt;
+}
+CustomEvent.prototype = global$1.Event.prototype;
+
+function createStorageEvent(data) {
+    var eventName = "shared-session-storage";
+    var params = {
+        bubbles: false,
+        cancelable: false,
+        detail: data
+    };
+    if (global$1.CustomEvent) {
+        return new global$1.CustomEvent(eventName, params);
+    } else {
+        return new CustomEvent(eventName, params);
+    }
+}
+
 var SharedSessionStorage = function () {
     function SharedSessionStorage() {
         classCallCheck(this, SharedSessionStorage);
@@ -188,11 +215,15 @@ var SharedSessionStorage = function () {
                 case ACTION_RESPONSE:
                     if (obj.targetId === this.sessionId) {
                         this.setAllItem(obj.data);
+                        var _evt = createStorageEvent(obj.data);
+                        global$1.dispatchEvent(_evt);
                     }
                     break;
                 case ACTION_PUSH:
                     if (obj.originalId !== this.sessionId) {
                         this.setAllItem(obj.data);
+                        var _evt2 = createStorageEvent(obj.data);
+                        global$1.dispatchEvent(_evt2);
                     }
                     break;
             }
