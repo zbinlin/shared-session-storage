@@ -10,6 +10,33 @@ const SYNC_KEY = "__local-storage__shared-shared-session-sync-key__";
 
 const global = window;
 
+// Ref: https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent#Polyfill
+function CustomEvent (event, params) {
+    params = params || {
+        bubbles: false,
+        cancelable: false,
+        detail: undefined,
+    };
+    const evt = document.createEvent("CustomEvent");
+    evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+    return evt;
+}
+CustomEvent.prototype = global.Event.prototype;
+
+function createStorageEvent(data) {
+    const eventName = "shared-session-storage";
+    const params = {
+        bubbles: false,
+        cancelable: false,
+        detail: data,
+    };
+    if (global.CustomEvent) {
+        return new global.CustomEvent(eventName, params);
+    } else {
+        return new CustomEvent(eventName, params);
+    }
+}
+
 class SharedSessionStorage {
     constructor() {
         global.addEventListener("storage", this, true);
@@ -82,11 +109,15 @@ class SharedSessionStorage {
             case ACTION_RESPONSE:
                 if (obj.targetId === this.sessionId) {
                     this.setAllItem(obj.data);
+                    const evt = createStorageEvent(obj.data);
+                    global.dispatchEvent(evt);
                 }
                 break;
             case ACTION_PUSH:
                 if (obj.originalId !== this.sessionId) {
                     this.setAllItem(obj.data);
+                    const evt = createStorageEvent(obj.data);
+                    global.dispatchEvent(evt);
                 }
                 break;
         }
