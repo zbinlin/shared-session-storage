@@ -1,0 +1,24 @@
+{
+  "name": "shared-session-storage",
+  "version": "1.0.0",
+  "description": "Shared sessionStorage's sessions between tabs and windows",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/zbinlin/shared-session-storage.git"
+  },
+  "keywords": [
+    "sessionStorage",
+    "localStorage",
+    "session"
+  ],
+  "author": "zbinlin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zbinlin/shared-session-storage/issues"
+  },
+  "homepage": "https://github.com/zbinlin/shared-session-storage#readme"
+}
