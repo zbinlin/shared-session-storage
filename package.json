@@ -1,6 +1,6 @@
 {
   "name": "shared-session-storage",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Shared sessionStorage's sessions between tabs and windows",
   "main": "dist/index.js",
   "jsnext:main": "index.js",
