@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Shared sessionStorage's sessions between tabs and windows",
   "main": "dist/index.js",
+  "jsnext:main": "index.js",
   "scripts": {
+    "build": "rollup -c rollup.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,5 +22,12 @@
   "bugs": {
     "url": "https://github.com/zbinlin/shared-session-storage/issues"
   },
-  "homepage": "https://github.com/zbinlin/shared-session-storage#readme"
+  "homepage": "https://github.com/zbinlin/shared-session-storage#readme",
+  "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-preset-es2015-rollup": "^1.2.0",
+    "babel-preset-latest": "^6.16.0",
+    "rollup": "^0.36.4",
+    "rollup-plugin-babel": "^2.6.1"
+  }
 }

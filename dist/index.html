@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Shared Session Storage tester</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            .container {
+                width: 80%;
+                max-width: 960px;
+                min-width: 300px;
+                margin: 0 auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <p>使用方法：同时打开多个 tab 或窗口，加载本页面的链接，然后在其中的一个 tab/window 中点击下面的“Change Color”按钮，然后观察当前页面与其他页面的背景色是否变色，并且颜色一致。</p>
+            <button onclick="changeColor()">Change Color</button>
+            <button onclick="removeColor()">Remove Color</button>
+        </div>
+        <script src="./index.js"></script>
+        <script>
+            function changeColor() {
+                var r = Math.floor(Math.random() * 256);
+                var g = Math.floor(Math.random() * 256);
+                var b = Math.floor(Math.random() * 256);
+                var color = "rgb(" + [r, g, b].join(", ") + ")";
+                window.sharedSessionStorage.setItem("color", color);
+            }
+            function removeColor() {
+                window.sharedSessionStorage.removeItem("color");
+            }
+            var oldColor;
+            var intervalId = setInterval(function () {
+                var color = sharedSessionStorage.getItem("color");
+                if (color === null) {
+                    document.body.style.backgroundColor = "";
+                    oldColor = undefined;
+                } else if (oldColor !== color) {
+                    document.body.style.backgroundColor = color;
+                    oldColor = color;
+                }
+            }, 40);
+        </script>
+    </body>
+</html>
